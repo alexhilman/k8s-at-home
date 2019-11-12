@@ -1,5 +1,7 @@
 # K8S at Home
 
+**This is currently a work-in-progress. This note will be removed once the setup is fully documented.**
+
 K8S at Home name is documentation for myself as well as a guide to other developers they may set up their own Kubernetes infrastructure for their own use. This stack will be for long-term use (at-home production) and has the capability to be scaled out at a later time.
 
 Kubernetes has a fairly steep learning curve; this repository contains condensed information to get bring devs up to speed fairly quickly.
@@ -31,7 +33,9 @@ I highly recommended that you pick a static IP for your first Kubernetes node. T
 
 This guide uses `192.168.1.25/24` as that is my server's IP on my network. This IP address has been defined under the host name `eoankube`.
 
-## Installation
+## K8s Installation
+
+The goal of this section is to get a running Kubernetes installation
 
 ### Docker
 
@@ -171,9 +175,6 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
 ### Helm
-
-1. Create a service account for helm usage
-
 
 ```shell script
 sudo snap install helm --classic
