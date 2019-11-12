@@ -144,6 +144,11 @@ Condensed from https://kubernetes.io/docs/setup
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
     ```
+1. Apply the Flannel networking add-on
+
+    ```shell script
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
+    ```
 
 Your instance should be up and running and ready to accept deployments. Here's a simple test:
 
@@ -153,6 +158,23 @@ NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
 service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3m51s
 ```
 
+### Single-Node Installs
+
+If you only intend to run one and only one node, then you will need to make the master node available for pod scheduling. However, **if you want multiple nodes for your cluster, you can skip this step**.
+
+```shell script
+kubectl taint nodes --all node-role.kubernetes.io/master-
+```
+
+### Helm
+
+1. Create a service account for helm usage
+
+
+```shell script
+sudo snap install helm --classic
+helm init
+```
 ## License
 
 This project uses the following license: [Apache 2.0 License](LICENSE).
