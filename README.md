@@ -2,7 +2,7 @@
 
 **This is currently a work-in-progress. This note will be removed once the setup is fully documented.**
 
-K8S at Home name is documentation for myself as well as a guide to other developers they may set up their own Kubernetes infrastructure for their own use. This stack will be for long-term use (at-home production) and has the capability to be scaled out at a later time.
+K8S at Home name is documentation for myself as well as a guide to other developers they may set up their own Kubernetes infrastructure available on a home server for long-term use; even to host their own websites and code repositories.
 
 Kubernetes has a fairly steep learning curve; this repository contains condensed information to bring devs up to speed fairly quickly.
 
