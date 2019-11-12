@@ -19,5 +19,6 @@ On this host I have reserved 6-cores and 8 GB of RAM via a KVM hardware-based vi
 | OS | Ubuntu 19.10 |
 | Virtual? | Yes, via `kvm` |
 | Hostname | `eoankube` |
+| DNS Entry | `eoankube.alexhilman.com` |
 | IP Address | `192.168.1.25` |
 | Network | bridged |
