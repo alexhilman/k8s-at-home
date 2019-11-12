@@ -2,7 +2,7 @@
 
 K8S at Home name is documentation for myself as well as a guide to other developers they may set up their own Kubernetes infrastructure for their own use.
 
-Kubernetes has a fairly steep learning curve; this repository contains condensed information to get bring devs up to speed farily quickly.
+Kubernetes has a fairly steep learning curve; this repository contains condensed information to get bring devs up to speed fairly quickly.
 
 ## Prerequisites
 
