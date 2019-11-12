@@ -33,7 +33,7 @@ This guide uses `192.168.1.25/24` as that is my server's IP on my network. This 
 
 These instructions are condensed from the [Ubuntu Docker install guide](https://docs.docker.com/install/linux/docker-ce/ubuntu/).
 
-_At the time of writing Docker is not directly supported on Ubuntu 19.10, so we'll need to use the packages distributed for 19.04 (`disco`)._
+_At the time of writing, Docker is not directly supported on Ubuntu 19.10, so we'll need to use the packages distributed for 19.04 (`disco`)._
 
 ```shell script
 sudo apt-get update
@@ -48,7 +48,109 @@ sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    disco \
    stable"
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce=18.09 docker-ce-cli containerd.io
+sudo usermod --append --groups docker "$USER"
+```
+
+Docker should work for you. Here's a simple test:
+
+```text
+$ sudo docker run --rm hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+1b930d010525: Pull complete 
+Digest: sha256:c3b4ada4687bbaa170745b3e4dd8ac3f194ca95b2d0518b417fb47e5879d9b5f
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
+
+### Kubernetes
+
+Condensed from https://kubernetes.io/docs/setup
+
+1. Configure Docker for use with `systemd` as the control group driver (note: if you already have Docker configured, then you will need to merge the configs instead of this overwrite operation)
+
+    ```shell script
+    cat <<EOF | sudo tee /etc/docker/daemon.json >/dev/null
+    {
+      "exec-opts": ["native.cgroupdriver=systemd"],
+      "log-driver": "json-file",
+      "log-opts": {
+        "max-size": "100m"
+      },
+      "storage-driver": "overlay2"
+    }
+    EOF
+    sudo mkdir -p /etc/systemd/system/docker.service.d
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker
+    ```
+1. Kubernetes doesn't play well with `swap`, so we'll disable it permanently
+
+    ```shell script
+    sudo swapoff -a
+    sudo sed --in-place --regexp-extended '/none\s+swap\s+sw\s+/d' /etc/fstab
+    ```
+1. Kubernetes (and Docker) rely on the legacy `iptables` functions to route packets and lock down communications. Since Ubuntu 19.04 iptables uses `nftables` as a back-end for `iptables`; to work around this we need to switch to legacy mode:
+
+    ```shell script
+    sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+    sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+    ```
+1. Add the k8s repository and required packages
+
+    ```shell script
+    sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    deb https://apt.kubernetes.io/ kubernetes-xenial main
+    EOF
+    sudo apt-get update
+    sudo apt-get install -y kubelet kubeadm kubectl
+    sudo apt-mark hold kubelet kubeadm kubectl
+    ```
+1. Initialize your `kubelet`
+
+    ```shell script
+    sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint=eoankube
+    ```
+    1. There will be a warning: Kubernetes is currently at version 1.16.2 which lists the maximum supported version of Docker at 18.09; since we are using the latest Docker (19.3) we'll need to accept this to continue
+        1. Kubernetes will still work in this condition
+
+1. To easily interact with the cluster with your Linux user, run the following commands:
+
+    ```shell script
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    ```
+
+Your instance should be up and running and ready to accept deployments. Here's a simple test:
+
+```text
+$ kubectl get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   3m51s
 ```
 
 ## License
