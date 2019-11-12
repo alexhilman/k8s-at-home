@@ -35,7 +35,11 @@ This guide uses `192.168.1.25/24` as that is my server's IP on my network. This 
 
 ## K8s Installation
 
-The goal of this section is to get a running Kubernetes installation
+The goal of this section is to get a running Kubernetes cluster (single-node) with the following services:
+1. HTTP(S) Ingress
+1. Let's Encrypt CA for automated SSL certs
+1. GitLab CE for code, CI, etc
+1. Smallstep CA for internal network identities; primarily for signed SSH certificates
 
 ### Docker
 
