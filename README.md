@@ -4,7 +4,7 @@
 
 K8S at Home name is documentation for myself as well as a guide to other developers they may set up their own Kubernetes infrastructure for their own use. This stack will be for long-term use (at-home production) and has the capability to be scaled out at a later time.
 
-Kubernetes has a fairly steep learning curve; this repository contains condensed information to get bring devs up to speed fairly quickly.
+Kubernetes has a fairly steep learning curve; this repository contains condensed information to bring devs up to speed fairly quickly.
 
 On a final note, we will be using a [management tool called `helm`](https://github.com/helm/helm) to make things easier for us to install the vanilla services we need in the stack. 
 
