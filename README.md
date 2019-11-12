@@ -6,6 +6,10 @@ Kubernetes has a fairly steep learning curve; this repository contains condensed
 
 On a final note, we will be using a [management tool called `helm`](https://github.com/helm/helm) to make things easier for us to install the vanilla services we need in the stack. 
 
+## License
+
+This project uses the following license: [Apache 2.0 License](LICENSE).
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
@@ -175,6 +179,3 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 sudo snap install helm --classic
 helm init
 ```
-## License
-
-This project uses the following license: [Apache 2.0 License](LICENSE).
