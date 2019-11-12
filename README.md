@@ -51,4 +51,4 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 ## License
 
-This project uses the following license: [Apache 2.0 License](LICENSE)
+This project uses the following license: [Apache 2.0 License](LICENSE).
