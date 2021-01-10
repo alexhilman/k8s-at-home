@@ -12,6 +12,6 @@ On this host I am using KVM to manage a set of virtual machines (all Ubuntu 20.0
 | RAM | 64 GB |
 | Disk | 1TB System partition, ext4 |
 | Disk | 2TB ZFS storage container for VMs |
-| Network | `10.0.0.10/16` |
+| Network | `10.0.0.10/8` |
 
 _ZFS is limited to a maximum ARC cache size of 16GB._
