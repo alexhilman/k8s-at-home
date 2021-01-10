@@ -51,7 +51,6 @@ Ultimate goal: minimum requirements for a HA cluster (3 master nodes; 3 worker n
 
 ### Node Prep: Master and Worker
 
-1. Install [Docker for Kubernetes](documentation/docker/install-docker-for-k8s.md)
 1. Install [`kubeadm`, `kubelet`, and `kubectl`](documentation/k8s/install-tools.md)
 
 ### Primary Master Node
