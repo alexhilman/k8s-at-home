@@ -6,7 +6,7 @@
     sudo swapoff -a
     sudo sed --in-place --regexp-extended '/none\s+swap\s+sw\s+/d' /etc/fstab
     ```
-1. Allow iptables to see bridged traffic
+1. Configure modules and system for Kubernetes
 
     ```shell script
     cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
