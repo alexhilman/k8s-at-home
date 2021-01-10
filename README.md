@@ -16,7 +16,7 @@ This project uses the following license: [Apache 2.0 License](LICENSE).
 
 Before you begin, ensure you have
 * a working understanding of Linux operating systems and utilities like SSH and Bash;
-* a basic understanding of containerization; ideally with [Docker](https://docs.docker.com/); and
+* a basic understanding of containerization; and
 * access to one or more servers in which to create nodes for K8s with the following minimum specs (each)
     * [`iptables` version >= 1.6.2](documentation/iptables-race-condition.md)
     * at least 4 GB of RAM
