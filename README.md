@@ -4,7 +4,7 @@
 
 K8S at Home name is documentation for myself as well as a guide to other administrators who wish to set up their own Kubernetes infrastructure on a small server.
 
-Kubernetes has a fairly steep learning curve; this repository contains condensed information to bring administrators up to speed fairly quickly. Anecdotes will be provided via links to other documentation spaces in this repository to provide more detail.
+Kubernetes has a fairly steep learning curve; this repository contains condensed information to bring administrators up to speed fairly quickly. The primary documentation is in abridged format with more interesting details linked to in other pages.
 
 On a final note, we will be using a [management tool called `helm`](https://github.com/helm/helm) to make things easier for us to install the vanilla services we need in the stack. 
 
