@@ -31,3 +31,13 @@
     sudo apt-get install -y kubelet kubeadm kubectl
     sudo apt-mark hold kubelet kubeadm kubectl
     ```
+
+1. Configure `kubeadm` to use `systemd` as the cgroup driver
+
+   ```bash
+   echo "apiVersion: kubelet.config.k8s.io/v1beta1
+   kind: KubeletConfiguration
+   cgroupDriver: systemd" | sudo tee /var/lib/kubelet/config.yaml
+   sudo systemctl daemon-reload
+   sudo systemctl restart kubelet
+   ```
