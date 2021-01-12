@@ -58,3 +58,9 @@ sudo parted /dev/sda resizepart 3 100%
 sudo pvresize /dev/sda3 
 sudo lvextend /dev/ubuntu-vg/ubuntu-lv /dev/sda3 --resizefs
 ```
+
+Install NFS utils for mounts
+
+```shell script
+sudo apt install -y nfs-kernel-server
+```
