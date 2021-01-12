@@ -49,19 +49,31 @@ Ultimate goal: minimum requirements for a HA cluster (3 master nodes; 3 worker n
 1. Nexus OSS for artifact storage (I'm a Java developer)
 1. Room to grow
 
-### Node Prep: Master and Worker
+### Node Prep: Master and Workers
 
 1. Install [`containerd`](documentation/containerd/install-containerd.md)
 1. Install [`kubeadm`, `kubelet`, and `kubectl`](documentation/k8s/install-tools.md)
 
-### Primary Master Node
+### Master Node
 
-**Only on `kmaster-01`**.
+_You will need two terminals to your master node open at once._
 
-1. Initialize your first Kubernetes node
+1. Initialize your master Kubernetes node _and immediately run the next step in your second terminal_
 
     ```shell script
-    sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint=$(hostname --fqdn)
+    sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+    ```
+1. In your second session, modify Kubelet's config for use with the `systemd` cgroup driver and restart the service:
+    ```shell script
+    echo "cgroupDriver: systemd" >> sudo tee /var/lib/kubelet/config.yaml
+    sudo systemctl restart kubelet
+    ```
+    1. If the above commands were issued on time, then the master node should initialize correctly
+1. Copy the Kubernetes config in the master node to your Linux user's home directory:
+    ```shell script
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
     ```
 1. Apply the [Flannel networking add-on](https://github.com/coreos/flannel#flannel)
 
@@ -91,10 +103,8 @@ Install `kubectl` to your client PC using the instructions for your distribution
 
 Copy the master node's Kube config file to your client PC
 
-```bash
-mkdir $HOME/.kube
-chmod go-rwx $HOME/.kube
-scp kmaster-01.alexhilman.com:.kube/config $HOME/.kube
+```shell script
+scp -rp kmaster-01.alexhilman.com:.kube $HOME
 ```
 
 ### Worker Nodes
