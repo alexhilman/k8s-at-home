@@ -38,10 +38,10 @@ sudo zfs create -o mountpoint=/export/nfs/k8s/ root/nfs/k8s
 ## Adding NFS Volumes for Deployments
 
 ```shell script
-DEPLOYMENT="my-deployment"
+VOL_NAME="my-vol"
 
-sudo zfs create -o mountpoint=/export/nfs/k8s/$DEPLOYMENT root/nfs/k8s/$DEPLOYMENT
-sudo chmod 777 /export/nfs/k8s/$DEPLOYMENT
-echo "/export/nfs/k8s/$DEPLOYMENT  10.0.0.0/24(rw,sync,no_subtree_check)" | sudo tee --append /etc/exports
+sudo zfs create -o mountpoint=/export/nfs/k8s/$VOL_NAME root/nfs/k8s/$VOL_NAME
+sudo chmod 777 /export/nfs/k8s/$VOL_NAME
+echo "/export/nfs/k8s/$VOL_NAME  10.0.0.0/24(rw,sync,no_subtree_check)" | sudo tee --append /etc/exports
 sudo systemctl reload nfs-server
 ```
