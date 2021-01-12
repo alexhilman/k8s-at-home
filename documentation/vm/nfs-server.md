@@ -31,5 +31,17 @@ sudo sed -i s/focal-template/nfs/g /etc/hosts
 sudo apt install -y nfs-kernel-server zfsutils-linux
 sudo parted /dev/sdb mklabel gpt
 sudo zpool create -m none -o autoexpand=on root /dev/sdb
-sudo zfs create -o mountpoint=/nfs root/nfs
+sudo zfs create -o mountpoint=/export/nfs/ root/nfs
+sudo zfs create -o mountpoint=/export/nfs/k8s/ root/nfs/k8s
+```
+
+## Adding NFS Volumes for Deployments
+
+```shell script
+DEPLOYMENT="my-deployment"
+
+sudo zfs create -o mountpoint=/export/nfs/k8s/$DEPLOYMENT root/nfs/k8s/$DEPLOYMENT
+sudo chmod 777 /export/nfs/k8s/$DEPLOYMENT
+echo "/export/nfs/k8s/$DEPLOYMENT  10.0.0.0/24(rw,sync,no_subtree_check)" | sudo tee --append /etc/exports
+sudo systemctl reload nfs-server
 ```
