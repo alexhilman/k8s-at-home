@@ -58,17 +58,25 @@ Ultimate goal: minimum requirements for a HA cluster (3 master nodes; 3 worker n
 
 _You will need two terminals to your master node open at once._
 
-1. Initialize your master Kubernetes node _and immediately run the next step in your second terminal_
+1. Initialize your master Kubernetes node _and very quickly run the next step in your second terminal_
 
     ```shell script
     sudo kubeadm init --pod-network-cidr=10.244.0.0/16
     ```
-1. In your second session, modify Kubelet's config for use with the `systemd` cgroup driver and restart the service:
+1. Wait for the following output line from the `kubeadm init` command:
+    
+    ```plain
+    Waiting for the kubelet to boot up the control plane as static Pods from directory
+    ```
+    
+    Now run the following script on your **second** session
+    
     ```shell script
-    echo "cgroupDriver: systemd" >> sudo tee /var/lib/kubelet/config.yaml
+    echo "cgroupDriver: systemd" | sudo tee --append /var/lib/kubelet/config.yaml
     sudo systemctl restart kubelet
     ```
     1. If the above commands were issued on time, then the master node should initialize correctly
+    1. **TODO** find a way of making this seamless; this seems really janky
 1. Copy the Kubernetes config in the master node to your Linux user's home directory:
     ```shell script
     mkdir -p $HOME/.kube
