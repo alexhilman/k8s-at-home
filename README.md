@@ -77,6 +77,7 @@ _You will need two terminals to your master node open at once._
     ```
     1. If the above commands were issued on time, then the master node should initialize correctly
     1. **TODO** find a way of making this seamless; this seems really janky
+1. Note and save the printed `kubeadm join` command in the first terminal's output; this will be used for any worker nodes you wish to add to your cluster
 1. Copy the Kubernetes config in the master node to your Linux user's home directory:
     ```shell script
     mkdir -p $HOME/.kube
@@ -119,6 +120,15 @@ scp -rp kmaster-01.alexhilman.com:.kube $HOME
 
 I'm going to use three [identical virtual machines](documentation/vm/worker-node.md) for applications and services.
 
+Run these steps on **each** worker node:
+
+1. Run your `kubeadm join` command **without the `--control-plane` argument** which was printed out in your master node's initialization output
+1. Configure `kubelet` for `systemd`
+
+    ```shell script
+    echo "cgroupDriver: systemd" | sudo tee --append /var/lib/kubelet/config.yaml
+    sudo systemctl restart kubelet
+    ```
 ### Helm
 
 ```shell script
