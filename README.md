@@ -135,29 +135,3 @@ Run these steps on **each** worker node:
 sudo snap install helm --classic
 helm init
 ```
-
-### NFS Server
-
-This part may be a bit complicated as it is a volume-in-volume approach, so I'll describe what we are going to do:
-
-1. Make a `local` Kubernetes volume and claim
-1. Install an NFS service in K8s
-
-This NFS service will provide a network-available storage solution to other pods as exposed NFS volumes. Each NFS volume will be hosted on the single bare-metal `local` volume (and claim) on the node in step 1.
-
-1. Create the `local` volume's storage directory on the host which will serve the NFS service
-
-    ```shell script
-    sudo mkdir -p /srv/k8s/nfs-server
-    ```
-1. Create the NFS volumes (change any values in these files to suit your needs)
-
-    ```shell script
-    kubectl apply -f nfs/volumes/nfs-server-pv.yml
-    kubectl apply -f nfs/volumes/nfs-server-pvc.yml
-    ```
-
-1. Create the NFS service
-
-    ```shell script
-    kubectl apply -f nfs/nfs.yml
